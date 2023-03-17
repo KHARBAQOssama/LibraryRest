@@ -18,6 +18,8 @@ class User extends Authenticatable implements JWTSubject
         return $this->belongsTo(Role::class);
     }
     
+    
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -71,5 +73,10 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function hasPermission($permission)
+    {
+        return $this->role->permissions->contains('name', $permission);
     }
 }
