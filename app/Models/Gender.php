@@ -5,12 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Permission extends Model
+class Gender extends Model
 {
     use HasFactory;
 
-    public function roles()
+    public function books()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Book::class);
     }
+
+    protected $fillable = [
+        'name'
+    ];
 }

@@ -15,7 +15,6 @@ class RoleFactory extends Factory
      *
      * @return array<string, mixed>
      */
-
     protected $model = Role::class;
 
     private $counter = 0;

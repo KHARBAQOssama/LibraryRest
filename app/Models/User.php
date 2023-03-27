@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\Role;
+// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Notifications\Notifiable;
@@ -17,9 +17,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->belongsTo(Role::class);
     }
-    
-    
-    
+
     /**
      * The attributes that are mass assignable.
      *
@@ -52,8 +50,7 @@ class User extends Authenticatable implements JWTSubject
         'email_verified_at' => 'datetime',
     ];
 
-
-     // Rest omitted for brevity
+    // Rest omitted for brevity
 
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.

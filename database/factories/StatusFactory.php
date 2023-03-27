@@ -2,34 +2,33 @@
 
 namespace Database\Factories;
 
-use App\Models\Permission;
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Permission>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Status>
  */
-class PermissionFactory extends Factory
+class StatusFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
-    protected $model = Permission::class;
+    protected $model = Status::class;
 
     private $counter = 0;
-    
+
     public function definition(): array
-    {
+    {       
         $names = [
-            'changePermissions', 'addBooks', 'updateBooks', 'deleteBooks',
-            'addGender', 'updateGender', 'deleteGender'
+            'available', 'borrowed', 'processing'
         ];
+
         $name = $names[$this->counter];
 
         $this->counter++;
-
-
+        
         return [
             'name' => $name,
         ];
