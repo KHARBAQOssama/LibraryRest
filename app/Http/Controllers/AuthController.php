@@ -2,9 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\Controller;
+use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -15,7 +19,7 @@ class AuthController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['login']]);
+        $this->middleware('auth:api', ['except' => ['login','forgetPassword','reset']]);
     }
 
     /**
@@ -82,5 +86,53 @@ class AuthController extends Controller
         ]);
     }
 
+    public function forgetPassword(){
+        request()->validate(['email' => 'required|email|exists:users']);
+        $token = Str::random(64);
+
+        $email = request('email');
+
+        DB::table('password_reset_tokens')->insert([
+            'email' => $email, 
+            'token' => $token, 
+            'created_at' => Carbon::now()
+        ]);
+        //1 : view - 2 : wlh ma39alt
+        Mail::send([], [], function($message) use($email,$token){
+            $message->to($email);
+            $message->subject('Reset Password');
+            $message->text(
+                "please click on the link below to reset your password. \n
+                http://localhost:8000/api/password/reset?email=".$email."&token=".$token
+                            );
+        });
+
+        return response()->json(['message'=> 'check your email']);
+    }
+
     
+    public function reset(){
+        request()->validate([
+            'password' => 'required|string|min:6|confirmed',
+            'password_confirmation' => 'required'
+        ]);
+
+        $updatePassword = DB::table('password_reset_tokens')
+                            ->where([
+                              'email' => request('email'), 
+                              'token' => request('token')
+                            ])
+                            ->first();
+
+        if(!$updatePassword){
+            return response()->json(['error'=>'Invalid token!']);
+        }
+
+        $user = User::where('email', request('email'))
+                    ->update(['password' => Hash::make(request('password'))]);
+
+        DB::table('password_reset_tokens')->where(['email'=> request('email')])->delete();
+
+        return response()->json(['message'=>'Your password has been changed!']);
+    }
 }

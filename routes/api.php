@@ -42,6 +42,13 @@ Route::group([
     Route::put('change-password',[UserController::class,'changePassword']);
 });
 
+Route::group([
+    'middleware' => 'api',
+    'prefix' =>'password'
+],function(){
+    Route::post('forget',[AuthController::class , 'forgetPassword']);
+    Route::post('reset',[AuthController::class , 'reset']);
+});
 
 Route::apiResource('user',UserController::class);
 Route::apiResource('book',BookController::class);
