@@ -72,7 +72,10 @@ class UserController extends Controller
         $user->update(
             $data
         );
-        return response()->json($user);
+        return response()->json([
+            'message' => 'your profile has been updated successfully',
+            'user' => $user
+        ]);
     }
 
     public function changePassword(ChangePasswordRequest $request){
@@ -88,7 +91,6 @@ class UserController extends Controller
         
         return response()->json([
             'message' => 'Password updated successfully',
-            'user' => JWTAuth::user()->password,
         ]);
     }
     /**

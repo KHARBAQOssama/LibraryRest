@@ -17,11 +17,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $roles          = Role::factory()->count(3)->create();
-        $roles          = Status::factory()->count(3)->create();
-        $permissions    = Permission::factory()->count(7)->create();
-        $users          = User::factory()->count(10)->create();
+        $this->call([
+            RolesAndPermissionsSeeder::class
+        ]);
         
+        // $roles          = Role::factory()->count(3)->create();
+        // $permissions    = Permission::factory()->count(7)->create();
+        $users          = User::factory()->count(10)->create();
+        $status          = Status::factory()->count(3)->create();
 
         $adminPermissions = [
             'changePermissions', 
@@ -54,12 +57,8 @@ class DatabaseSeeder extends Seeder
             $role->permissions()->attach($permission);
         }
 
-        $admin              = new User();
-        $admin->first_name  = 'John';
-        $admin->last_name   = 'Doe';
-        $admin->email       = 'admin@admin.com';
-        $admin->password    = Hash::make('admin123');
-        $admin->role_id     = 3;
-        $admin->save();
+        $this->call([
+            AdminUserSeeder::class
+        ]);
     }
 }

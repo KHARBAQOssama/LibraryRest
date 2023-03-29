@@ -15,6 +15,6 @@ class RolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         $roles = Role::factory()->count(3)->create();
-        $permissions = Permission::factory()->count(12)->create();
+        $permissions = Permission::factory()->count(7)->create();
     }
 }

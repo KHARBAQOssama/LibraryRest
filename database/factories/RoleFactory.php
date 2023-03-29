@@ -24,6 +24,7 @@ class RoleFactory extends Factory
         $names = [
             'Client', 'Receptionist', 'Admin'
         ];
+        
         $name = $names[$this->counter];
 
         $this->counter++;
